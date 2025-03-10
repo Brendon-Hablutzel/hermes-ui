@@ -16,7 +16,7 @@ const ProjectCardSkeleton = () => {
   return (
     <div className="w-[90%] max-w-[950px]">
       <div className="shadow p-4 border-[1px] border-gray-200 rounded-xl flex flex-col gap-3">
-        <div className={`${skeletonTheme} h-10 w-40`}>{/* project name */}</div>
+        <div className={`${skeletonTheme} h-10 w-60`}>{/* project name */}</div>
         <div className="border-[0px] border-gray-200 rounded-xl flex flex-col gap-4">
           <div className="flex justify-between">
             <div className={`${skeletonTheme} h-9 w-30`}>
@@ -229,7 +229,7 @@ export const App = () => {
           </a>
         </div>
       </div>
-      <div className="p-4 flex justify-center h-screen">
+      <div className="flex flex-col gap-5 items-center min-h-screen">
         {projectsLoading ? (
           <ProjectCardSkeleton />
         ) : projectsError !== null ? (

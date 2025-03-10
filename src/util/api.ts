@@ -1,6 +1,11 @@
 const BASE_URL = "http://localhost:8080";
 
-type ResourceType = "aws-elb" | "aws-ecs" | "aws-rds" | "cloudflare-pages";
+type ResourceType =
+  | "aws-elb"
+  | "aws-ecs"
+  | "aws-rds"
+  | "aws-apigw"
+  | "cloudflare-pages";
 
 export const getResourceTypeFull = (type: ResourceType) => {
   switch (type) {
@@ -10,6 +15,8 @@ export const getResourceTypeFull = (type: ResourceType) => {
       return "AWS ECS";
     case "aws-rds":
       return "AWS RDS";
+    case "aws-apigw":
+      return "AWS API Gateway";
     case "cloudflare-pages":
       return "Cloudflare Pages";
   }
