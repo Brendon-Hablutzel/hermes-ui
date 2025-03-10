@@ -1,3 +1,5 @@
+const BASE_URL = "http://localhost:8080";
+
 type ResourceType = "aws-elb" | "aws-ecs" | "aws-rds" | "cloudflare-pages";
 
 export const getResourceTypeFull = (type: ResourceType) => {
@@ -40,7 +42,7 @@ interface DeploymentDefinition {
   resources: ResourceDefinition[];
 }
 
-interface ProjectDefinition {
+export interface ProjectDefinition {
   name: string;
   deployments: DeploymentDefinition[];
 }
@@ -50,7 +52,7 @@ interface GetProjectDefinitionsResponse {
 }
 
 const fetchProjectDefinition = async (projectName: string) => {
-  const res = await fetch(`http://localhost:8080/projects/${projectName}`);
+  const res = await fetch(`${BASE_URL}/projects/${projectName}`);
 
   if (res.status !== 200) {
     throw new Error(
@@ -63,13 +65,29 @@ const fetchProjectDefinition = async (projectName: string) => {
   return data as GetProjectDefinitionsResponse;
 };
 
+interface GetProjectsResponse {
+  projects: ProjectDefinition[];
+}
+
+export const fetchProjects = async () => {
+  const res = await fetch(`${BASE_URL}/projects`);
+
+  if (res.status !== 200) {
+    throw new Error("bad response for getting projects: " + res.status);
+  }
+
+  const data = await res.json();
+
+  return data as GetProjectsResponse;
+};
+
 const fetchResourceSnapshot = async (
   projectName: string,
   deploymentName: string,
   resourceName: string
 ) => {
   const res = await fetch(
-    `http://localhost:8080/projects/${projectName}/deployments/${deploymentName}/resources/${resourceName}/snapshot`
+    `${BASE_URL}/projects/${projectName}/deployments/${deploymentName}/resources/${resourceName}/snapshot`
   );
 
   if (res.status !== 200) {
