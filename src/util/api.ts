@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = `http://${location.hostname}:8080`;
 
 export type ResourceType =
   | "aws-elb"
