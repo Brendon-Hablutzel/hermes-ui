@@ -45,6 +45,7 @@ interface DeploymentSnapshot {
 interface ResourceSnapshot {
   definition: ResourceDefinition;
   healthy: boolean;
+  exists: boolean;
   status: object;
 }
 
