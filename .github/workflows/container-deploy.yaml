@@ -1,0 +1,42 @@
+name: Push and push Docker image
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  # TODO: potentially use matrix to speed up building the various image
+  # https://stackoverflow.com/questions/77740410/github-docker-build-push-action-with-multiple-architectures-is-slow
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # linux/amd64,linux/arm64,linux/arm/v8
+
+      - name: Build and Push Docker Images
+        run: |
+          docker buildx build --platform linux/arm64 -t ghcr.io/brendon-hablutzel/hermes-ui:latest . \
+          --push
