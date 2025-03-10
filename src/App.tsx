@@ -9,6 +9,7 @@ import {
   ProjectDefinition,
   ProjectSnapshot,
 } from "./util/api";
+import ProviderLogo from "./components/ProviderLogo";
 
 const ProjectCardSkeleton = () => {
   const skeletonTheme = "bg-gray-300 rounded animate-pulse";
@@ -163,8 +164,14 @@ const ProjectCard = ({ name }: { name: string }) => {
                               )}
                             </div>
                           </div>
-                          <div className="text-md">
-                            {getResourceTypeFull(resource.definition.type)}
+                          <div className="flex justify-start items-center gap-2">
+                            <div className="text-md">
+                              {getResourceTypeFull(resource.definition.type)}
+                            </div>
+                            <ProviderLogo
+                              resourceType={resource.definition.type}
+                              size={20}
+                            />
                           </div>
                         </div>
                         <div className="flex flex-col gap-2">

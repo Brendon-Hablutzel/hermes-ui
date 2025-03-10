@@ -1,6 +1,6 @@
 const BASE_URL = "http://localhost:8080";
 
-type ResourceType =
+export type ResourceType =
   | "aws-elb"
   | "aws-ecs"
   | "aws-rds"
@@ -10,16 +10,26 @@ type ResourceType =
 export const getResourceTypeFull = (type: ResourceType) => {
   switch (type) {
     case "aws-elb":
-      return "AWS ELB";
+      return "ELB";
     case "aws-ecs":
-      return "AWS ECS";
+      return "ECS";
     case "aws-rds":
-      return "AWS RDS";
+      return "RDS";
     case "aws-apigw":
-      return "AWS API Gateway";
+      return "API Gateway";
     case "cloudflare-pages":
-      return "Cloudflare Pages";
+      return "Pages";
   }
+};
+
+export type ResourceProvider = "aws" | "cloudflare";
+
+export const resourceToProvider: Record<ResourceType, ResourceProvider> = {
+  "aws-apigw": "aws",
+  "aws-ecs": "aws",
+  "aws-elb": "aws",
+  "aws-rds": "aws",
+  "cloudflare-pages": "cloudflare",
 };
 
 export interface ProjectSnapshot {
