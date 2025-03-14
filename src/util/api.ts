@@ -1,10 +1,10 @@
-const BASE_URL = (() => {
+const getBaseUrl = (): string => {
   if (process.env.NEXT_API_URL) {
     return `http://${process.env.NEXT_API_URL}`;
   } else {
     throw new Error("no NEXT_API_URL found");
   }
-})();
+};
 
 export type ResourceType =
   | "aws-elb"
@@ -76,7 +76,7 @@ interface GetProjectDefinitionsResponse {
 }
 
 const fetchProjectDefinition = async (projectName: string) => {
-  const res = await fetch(`${BASE_URL}/projects/${projectName}`, {
+  const res = await fetch(`${getBaseUrl()}/projects/${projectName}`, {
     cache: "no-store",
   });
 
@@ -96,7 +96,7 @@ interface GetProjectsResponse {
 }
 
 export const fetchProjects = async () => {
-  const res = await fetch(`${BASE_URL}/projects`, {
+  const res = await fetch(`${getBaseUrl()}/projects`, {
     cache: "no-store",
   });
 
@@ -115,7 +115,7 @@ const fetchResourceSnapshot = async (
   resourceName: string
 ) => {
   const res = await fetch(
-    `${BASE_URL}/projects/${projectName}/deployments/${deploymentName}/resources/${resourceName}/snapshot`,
+    `${getBaseUrl()}/projects/${projectName}/deployments/${deploymentName}/resources/${resourceName}/snapshot`,
     {
       cache: "no-store",
     }
