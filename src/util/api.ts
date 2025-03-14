@@ -1,4 +1,10 @@
-const BASE_URL = `http://${location.hostname}:8080`;
+const BASE_URL = (() => {
+  if (process.env.NEXT_API_URL) {
+    return `http://${process.env.NEXT_API_URL}`;
+  } else {
+    throw new Error("no NEXT_API_URL found");
+  }
+})();
 
 export type ResourceType =
   | "aws-elb"
@@ -70,7 +76,9 @@ interface GetProjectDefinitionsResponse {
 }
 
 const fetchProjectDefinition = async (projectName: string) => {
-  const res = await fetch(`${BASE_URL}/projects/${projectName}`);
+  const res = await fetch(`${BASE_URL}/projects/${projectName}`, {
+    cache: "no-store",
+  });
 
   if (res.status !== 200) {
     throw new Error(
@@ -88,7 +96,9 @@ interface GetProjectsResponse {
 }
 
 export const fetchProjects = async () => {
-  const res = await fetch(`${BASE_URL}/projects`);
+  const res = await fetch(`${BASE_URL}/projects`, {
+    cache: "no-store",
+  });
 
   if (res.status !== 200) {
     throw new Error("bad response for getting projects: " + res.status);
@@ -105,7 +115,10 @@ const fetchResourceSnapshot = async (
   resourceName: string
 ) => {
   const res = await fetch(
-    `${BASE_URL}/projects/${projectName}/deployments/${deploymentName}/resources/${resourceName}/snapshot`
+    `${BASE_URL}/projects/${projectName}/deployments/${deploymentName}/resources/${resourceName}/snapshot`,
+    {
+      cache: "no-store",
+    }
   );
 
   if (res.status !== 200) {

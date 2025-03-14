@@ -12,6 +12,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+    strategy:
+      matrix:
+        platform: [linux/amd64, linux/arm64, linux/arm/v8]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -34,9 +37,11 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # linux/amd64,linux/arm64,linux/arm/v8
+      - name: Normalize Platform Name
+        run: echo "PLATFORM_TAG=${{ matrix.platform }}" | sed 's|/|-|g' >> $GITHUB_ENV
 
-      - name: Build and Push Docker Images
+      - name: Build and Push Docker Image
         run: |
-          docker buildx build --platform linux/arm64 -t ghcr.io/brendon-hablutzel/hermes-ui:latest . \
-          --push
+          docker buildx build --platform ${{ matrix.platform }} \
+            -t ghcr.io/brendon-hablutzel/hermes-ui:${{ env.PLATFORM_TAG }} \
+            --push .
