@@ -1,3 +1,5 @@
+"use server";
+
 import { Suspense } from "react";
 import { fetchProjects } from "../util/api";
 import ProjectCard from "./ProjectCard";

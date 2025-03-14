@@ -1,3 +1,5 @@
+"use server";
+
 import CheckCircleIcon from "../svg/CheckCircleIcon";
 import XCircleIcon from "../svg/XCircleIcon";
 import { fetchProjectSnapshot, getResourceTypeFull } from "../util/api";
