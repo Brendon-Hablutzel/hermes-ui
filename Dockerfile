@@ -14,8 +14,10 @@ ARG TARGETARCH
 RUN echo "Building for architecture: $TARGETARCH" && \
     if [ "$TARGETARCH" = "amd64" ]; then \
     npm install @tailwindcss/oxide-linux-x64-gnu lightningcss-linux-x64-gnu; \
-    elif [ "$TARGETARCH" = "arm64" ] || [ "$TARGETARCH" = "arm" ]; then \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
     npm install @tailwindcss/oxide-linux-arm64-gnu; \
+    elif [ "$TARGETARCH" = "arm" ]; then \
+    npm install @tailwindcss/oxide-linux-arm-gnueabihf; \
     else \
     echo "Unsupported architecture: $TARGETARCH"; exit 1; \
     fi
