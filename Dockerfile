@@ -11,8 +11,8 @@ RUN npm ci
 
 ARG TARGETARCH
 
-# https://github.com/tailwindlabs/tailwindcss/issues/15806
-RUN if [ "$TARGETARCH" = "amd64" ]; then \
+RUN echo "Building for architecture: $TARGETARCH" && \
+    if [ "$TARGETARCH" = "amd64" ]; then \
     npm install @tailwindcss/oxide-linux-x64-gnu lightningcss-linux-x64-gnu; \
     elif [ "$TARGETARCH" = "arm64" ]; then \
     npm install @tailwindcss/oxide-linux-arm64-gnu; \
