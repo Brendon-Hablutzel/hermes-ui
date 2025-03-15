@@ -1,9 +1,14 @@
 const getBaseUrl = (): string => {
-  if (process.env.NEXT_API_URL) {
-    return `http://${process.env.NEXT_API_URL}`;
-  } else {
-    throw new Error("no NEXT_API_URL found");
+  if (!process.env.NEXT_API_URL) {
+    console.error("missing NEXT_API_URL");
   }
+
+  return process.env.NEXT_API_URL || "";
+  //   if (process.env.NEXT_API_URL) {
+  //     return `http://${process.env.NEXT_API_URL}`;
+  //   } else {
+  //     throw new Error("no NEXT_API_URL found");
+  //   }
 };
 
 export type ResourceType =
@@ -71,7 +76,7 @@ export interface ProjectDefinition {
   deployments: DeploymentDefinition[];
 }
 
-interface GetProjectDefinitionsResponse {
+export interface GetProjectDefinitionsResponse {
   project: ProjectDefinition;
 }
 
@@ -91,7 +96,7 @@ const fetchProjectDefinition = async (projectName: string) => {
   return data as GetProjectDefinitionsResponse;
 };
 
-interface GetProjectsResponse {
+export interface GetProjectsResponse {
   projects: ProjectDefinition[];
 }
 
