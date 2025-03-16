@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div>
       <div className="p-2 font-medium text-lg flex justify-between bg-white">
-        <div>hermes</div>
+        <div className="select-none">hermes</div>
         <div>
           <a target="_blank" href="https://github.com/Brendon-Hablutzel/hermes">
             <GithubIcon size={30} />

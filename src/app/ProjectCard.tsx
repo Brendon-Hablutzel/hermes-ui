@@ -4,13 +4,14 @@ import CheckCircleIcon from "../svg/CheckCircleIcon";
 import XCircleIcon from "../svg/XCircleIcon";
 import { fetchProjectSnapshot, getResourceTypeFull } from "../util/api";
 import ProviderLogo from "../components/ProviderLogo";
+import ResourceAttribute from "./ResourceAttribute";
 
 const ProjectCard = async ({ name }: { name: string }) => {
   const project = await fetchProjectSnapshot(name);
 
   return (
-    <div className="w-[90%] max-w-[950px]">
-      <div className="shadow p-4 border-[1px] border-gray-200 rounded-xl flex flex-col gap-3">
+    <div className="w-[95%] max-w-[950px]">
+      <div className="shadow p-2 sm:p-4 border-[1px] border-gray-200 rounded-xl flex flex-col gap-3">
         <div className="text-3xl font-bold">{project.definition.name}</div>
         {project.deployments.map((deployment, idx) => {
           const numResources = deployment.resources.length;
@@ -22,11 +23,11 @@ const ProjectCard = async ({ name }: { name: string }) => {
               key={idx}
               className="border-[0px] border-gray-200 rounded-xl flex flex-col gap-4"
             >
-              <div className="flex justify-between">
-                <div className="text-3xl font-medium">
+              <div className="flex max-sm:flex-col sm:flex-row gap-1 sm:justify-between sm:items-center">
+                <div className="text-2xl sm:text-3xl font-medium">
                   {deployment.definition.name}
                 </div>
-                <div className="text-2xl">
+                <div className="text-xl sm:text-2xl">
                   <span
                     className={`${
                       numHealthyResources === numResources
@@ -45,12 +46,12 @@ const ProjectCard = async ({ name }: { name: string }) => {
                 {deployment.resources.map((resource, idx) => (
                   <div
                     key={idx}
-                    className="shadow border-[1px] border-gray-200 rounded-xl p-3 flex flex-col justify-between gap-3"
+                    className="shadow border-[1px] border-gray-200 rounded-xl p-2 sm:p-3 flex flex-col justify-between gap-3"
                   >
                     <div className="flex flex-col gap-2">
                       <div>
                         <div className="flex justify-between">
-                          <div className="text-2xl font-medium">
+                          <div className="text-lg sm:text-2xl font-medium">
                             {resource.definition.name}
                           </div>
                           <div className="flex items-center">
@@ -62,7 +63,7 @@ const ProjectCard = async ({ name }: { name: string }) => {
                           </div>
                         </div>
                         <div className="flex justify-start items-center gap-2">
-                          <div className="text-md">
+                          <div className="text-sm sm:text-base">
                             {getResourceTypeFull(resource.definition.type)}
                           </div>
                           <ProviderLogo
@@ -74,17 +75,17 @@ const ProjectCard = async ({ name }: { name: string }) => {
                       {resource.exists ? (
                         <div className="flex flex-col gap-2">
                           {Object.entries(resource.status)
-                            .filter((entry) => typeof entry[1] !== "object")
+                            .filter(
+                              (entry) =>
+                                typeof entry[1] !== "object" &&
+                                entry[0] !== "exists"
+                            )
                             .map((entry, idx) => (
-                              <div
+                              <ResourceAttribute
                                 key={idx}
-                                className="bg-gray-100 rounded-lg px-2 py-1 text-sm flex justify-between gap-3"
-                              >
-                                <span>{entry[0]}</span>
-                                <span className="text-right font-mono">
-                                  {entry[1]}
-                                </span>
-                              </div>
+                                name={entry[0]}
+                                value={entry[1]}
+                              />
                             ))}
                         </div>
                       ) : (
